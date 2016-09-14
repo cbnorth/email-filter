@@ -43,7 +43,7 @@ let EmailFilterController = React.createClass({
 	    let deltaT = ((t1 - t0)/1000).toFixed(4);
 		let timer = `${deltaT} seconds`;
 
-		let copy = `This filter approach opts to not use a javaScript function, which can break down at scale, and instead relay on a loop. Here I am use the ES6 for-in loop to push each array item to an empty object which is used as a base of comparison to test against - if the item exists in the object then it will be filtered out and placed into a new array that does not contain it's pair.`;
+		let copy = `This filter approach opts to not use a javaScript function, which can break down at scale, and instead relay on a loop. Here I am use the ES6 "for-in" loop to push each array item to an empty object which is used as a base of comparison to test against - if the item exists in the object then it will be filtered out and placed into a new array that does not contain it's pair.`;
 
 		let filterHasRun = true
 		this.props.handleListUpdate(reducedEmails, timer, filterHasRun, copy);
@@ -81,7 +81,7 @@ let EmailFilterController = React.createClass({
 		        	<p>Method 1: ES5 `reduce`</p>
 		        	<a href="#" className="btn" onClick={(e) => this.reduceEmailsES5(e)}>Try it out</a><br />
 
-		        	<p>Method 2: `no function`</p>
+		        	<p>Method 2: `for-in loop`</p>
 		        	<a href="#" className="btn" onClick={(e) => this.reduceEmailsNoFunction(this.props.emailList)}>Try it out</a><br />
 
 		        	<p>Method 3: ES6 `new Set`</p>
