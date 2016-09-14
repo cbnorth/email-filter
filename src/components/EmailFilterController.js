@@ -8,17 +8,7 @@ let EmailFilterController = React.createClass({
 		this.props.handleListUpdate(emailCache, timer, filterHasRun)
 	},
 
-	reduceEmailsES6() {
-		let t0 = performance.now();
-		let reducedEmails = [ ...new Set(this.props.emailList) ];
-		let t1 = performance.now();
-		
-		let deltaT = ((t1 - t0)/1000).toFixed(4);
-		let timer = `${deltaT} seconds`;
-
-		let filterHasRun = true
-		this.props.handleListUpdate(reducedEmails, timer, filterHasRun);
-	},
+	//Note: I could have written this in a more DRY manner, where each filtering method was part of a single parent function. However, I found that nesting a conditional statement inside a single function (in order to determine which sub method to run) added to the run time of the parent method. Since time was a primary concern when comparing the efficiancy of the methods I opted to write each as a standalone method to test it's efficiancy in a more real-world scenario 
 
 	reduceEmailsES5() {
 		let t0 = performance.now();
@@ -31,20 +21,20 @@ let EmailFilterController = React.createClass({
 		let deltaT = ((t1 - t0)/1000).toFixed(4);
 		let timer = `${deltaT} seconds`;
 
+		let copy = `This filter approach relies on the javaScript array method "reduce", which compares each value of the original array against itself and results in a reduced list. While this was a familiar approach to take, it had it's costs. At small scales the overhead required by JavaScript functions is negligible, but at large scales a function  could potentially crash if it runs out of stack space and results in a longer run time.`;
+
 		let filterHasRun = true
-		this.props.handleListUpdate(reducedEmails, timer, filterHasRun);
+		this.props.handleListUpdate(reducedEmails, timer, filterHasRun, copy);
 	},
 
-	reduceEmailsNoFunction(e) {
+	reduceEmailsNoFunction(emailArray) {
 		let t0 = performance.now();
-	    var seen = {};
+	    var obvservedItem = {};
 	    var reducedEmails = [];
-	    var len = e.length;
 	    var j = 0;
-	    for(var i = 0; i < len; i++) {
-	         var item = e[i];
-	         if(seen[item] !== 1) {
-	               seen[item] = 1;
+	    for(var item of emailArray) {
+	         if(obvservedItem[item] !== 1) {
+	               obvservedItem[item] = 1;
 	               reducedEmails[j++] = item;
 	         }
 	    }
@@ -53,9 +43,24 @@ let EmailFilterController = React.createClass({
 	    let deltaT = ((t1 - t0)/1000).toFixed(4);
 		let timer = `${deltaT} seconds`;
 
-		let filterHasRun = true
-		this.props.handleListUpdate(reducedEmails, timer, filterHasRun);
+		let copy = `This filter approach opts to not use a javaScript function, which can break down at scale, and instead relay on a loop. Here I am use the ES6 for-in loop to push each array item to an empty object which is used as a base of comparison to test against - if the item exists in the object then it will be filtered out and placed into a new array that does not contain it's pair.`;
 
+		let filterHasRun = true
+		this.props.handleListUpdate(reducedEmails, timer, filterHasRun, copy);
+	},
+
+	reduceEmailsES6() {
+		let t0 = performance.now();
+		let reducedEmails = [ ...new Set(this.props.emailList) ];
+		let t1 = performance.now();
+		
+		let deltaT = ((t1 - t0)/1000).toFixed(4);
+		let timer = `${deltaT} seconds`;
+
+		let copy = `This filter approach was by far the fastest, but skirts around the intention of the experiment as it relies on the ES6 method "new Set()", which filters items of an array and returns only unique values.`
+
+		let filterHasRun = true
+		this.props.handleListUpdate(reducedEmails, timer, filterHasRun, copy);
 	},
 
 	render() {
@@ -64,6 +69,7 @@ let EmailFilterController = React.createClass({
 				<div className="controlsContainer left">
 					<h3>Run Time</h3>
 					<p className="runTimer">{this.props.runTime}</p>
+					<p>{this.props.justificationCopy}</p>
 					<a href="#" onClick={(e) => this.resetEmails(e)}>Reset List</a>
 		        </div>
 			)
@@ -72,13 +78,13 @@ let EmailFilterController = React.createClass({
 				<div className="controlsContainer left">
 		        	<h3>Remove Duplicates</h3>
 
-		        	<p>Method 2: ES5 `reduce`</p>
+		        	<p>Method 1: ES5 `reduce`</p>
 		        	<a href="#" className="btn" onClick={(e) => this.reduceEmailsES5(e)}>Try it out</a><br />
 
-		        	<p>Method 3: `no function`</p>
+		        	<p>Method 2: `no function`</p>
 		        	<a href="#" className="btn" onClick={(e) => this.reduceEmailsNoFunction(this.props.emailList)}>Try it out</a><br />
 
-		        	<p>Method 1: ES6 `new Set`</p>
+		        	<p>Method 3: ES6 `new Set`</p>
 		        	<a href="#" className="btn" onClick={(e) => this.reduceEmailsES6(e)}>Try it out</a><br />
 		        </div>
 		    )

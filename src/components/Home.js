@@ -9,7 +9,8 @@ let Home = React.createClass({
 			emails: [],
 			emailCache: [],
 			runTime: null,
-			hasRun: null
+			hasRun: null,
+			justificationCopy: null
 		}
 	},
 
@@ -20,16 +21,16 @@ let Home = React.createClass({
         });
 	},
 
-	handleListUpdate(reducedEmails, timer, filterHasRun) {
+	handleListUpdate(reducedEmails, timer, filterHasRun, copy) {
 		this.setState({
           emails: reducedEmails,
           runTime: timer,
-          hasRun: filterHasRun
+          hasRun: filterHasRun,
+          justificationCopy: copy
         });
 	},
 
 	render() {
-
 		return(
 			<div>
 				<EmailList emailsItems={this.state.emails} />
@@ -39,6 +40,7 @@ let Home = React.createClass({
 					handleListUpdate={this.handleListUpdate}
 					emailCache={this.state.emailCache}
 					hasRun={this.state.hasRun}
+					justificationCopy={this.state.justificationCopy}
 				/>
 		    </div>
 		)
