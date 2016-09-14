@@ -15,7 +15,6 @@ function shuffle(a) {
 function combine() {
 	shuffle(duplicateEmails);
 	combinedEmails = originalEmails.concat(duplicateEmails);
-	//reduceEmails();
 }
 
 (function makeEmails() {
