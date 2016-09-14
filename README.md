@@ -15,4 +15,5 @@ clone master
 ```npm install```
 
 ```$cd email-filter```
+
 ```webpack -w```

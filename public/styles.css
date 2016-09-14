@@ -55,6 +55,11 @@ h3 {
 	max-width: 400px;
 }
 
+.footer {
+	clear: both;
+	padding-top: 50px;
+}
+
 .btn, .btn:focus {
 	width: 250px;
 	background-color: #ff674d;

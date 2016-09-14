@@ -42,6 +42,7 @@ let Home = React.createClass({
 					hasRun={this.state.hasRun}
 					justificationCopy={this.state.justificationCopy}
 				/>
+				<div className="footer"><a href="https://github.com/chrisburkedev/email-filter" target="_blank">Source</a></div>
 		    </div>
 		)
 	}
