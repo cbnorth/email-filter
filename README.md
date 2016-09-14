@@ -1,4 +1,4 @@
-# email-filter
+# Email Filter Test
 
 ## Instructions
 In any language(s) of your choice, write a working function that removes all duplicates from an unsorted list of email addresses. You may assume any input data structure that you like. Do not use built-in library functions that make the problem trivial. Do not google any answers to this, I want to see your own implementation. 
@@ -15,4 +15,4 @@ clone master
 ```npm install```
 
 ```$cd email-filter```
-```webpack -```
+```webpack -w```
