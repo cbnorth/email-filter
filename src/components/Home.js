@@ -35,9 +35,9 @@ let Home = React.createClass({
 			<div>
 				<EmailList emailsItems={this.state.emails} />
 				<EmailFilterController 
+					handleListUpdate={this.handleListUpdate}
 					runTime={this.state.runTime} 
 					emailList={this.state.emails}
-					handleListUpdate={this.handleListUpdate}
 					emailCache={this.state.emailCache}
 					hasRun={this.state.hasRun}
 					justificationCopy={this.state.justificationCopy}

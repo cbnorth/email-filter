@@ -1,6 +1,12 @@
 import React from 'react';
 
 let EmailFilterController = React.createClass({
+	getInitialState () {
+	    return {
+	     	buttonState: ""
+	    }
+	},
+
 	resetEmails() {
 		let emailCache = this.props.emailCache;
 		let timer = null;
@@ -11,20 +17,23 @@ let EmailFilterController = React.createClass({
 	//Note: I could have written this in a more DRY manner, where each filtering method was part of a single parent function. However, I found that nesting a conditional statement inside a single function (in order to determine which sub method to run) added to the run time of the parent method. Since time was a primary concern when comparing the efficiancy of the methods I opted to write each as a standalone method to test it's efficiancy in a more real-world scenario 
 
 	reduceEmailsES5() {
-		let t0 = performance.now();
-		let reducedEmails = this.props.emailList.reduce(function(a,b){
-			if (a.indexOf(b) < 0 ) a.push(b);
-			return a;
-		},[]);
-		let t1 = performance.now();
-		
-		let deltaT = ((t1 - t0)/1000).toFixed(4);
-		let timer = `${deltaT} seconds`;
+		this.setState({buttonState: 'loading'}, () => {
+			let t0 = performance.now();
+			let reducedEmails = this.props.emailList.reduce(function(a,b){
+				if (a.indexOf(b) < 0 ) a.push(b);
+				return a;
+			},[]);
+			let t1 = performance.now();
+			
+			let deltaT = ((t1 - t0)/1000).toFixed(4);
+			let timer = `${deltaT} seconds`;
 
-		let copy = `This filter approach relies on the javaScript array method "reduce", which compares each value of the original array against itself and results in a reduced list. While this was a familiar approach to take, it had it's costs. At small scales the overhead required by JavaScript functions is negligible, but at large scales a function  could potentially crash if it runs out of stack space and results in a longer run time.`;
+			let copy = `This filter approach relies on the javaScript array method "reduce", which compares each value of the original array against itself and results in a reduced list. While this was a familiar approach to take, it had it's costs. At small scales the overhead required by JavaScript functions is negligible, but at large scales a function  could potentially crash if it runs out of stack space and results in a longer run time.`;
 
-		let filterHasRun = true
-		this.props.handleListUpdate(reducedEmails, timer, filterHasRun, copy);
+			let filterHasRun = true
+			this.props.handleListUpdate(reducedEmails, timer, filterHasRun, copy);
+			this.setState({buttonState: null})
+		})
 	},
 
 	reduceEmailsNoFunction(emailArray) {
@@ -64,7 +73,14 @@ let EmailFilterController = React.createClass({
 	},
 
 	render() {
-		if (this.props.hasRun) {
+		if (this.state.buttonState) {
+			console.log('go')
+			return (
+				<div className="controlsContainer left">
+					<p>loading</p>
+				</div>
+			)
+		} else if (this.props.hasRun) {
 			return (
 				<div className="controlsContainer left">
 					<h3>Run Time</h3>

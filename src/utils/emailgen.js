@@ -2,7 +2,7 @@ let combinedEmails = [];
 let duplicateEmails = [];
 let originalEmails = [];
 
-function shuffle(a) {
+const shuffle = (a) => {
     let j, x, i;
     for (i = a.length; i; i--) {
         j = Math.floor(Math.random() * i);
@@ -12,12 +12,12 @@ function shuffle(a) {
     }
 }
 
-function combine() {
+const combine = (a) => {
 	shuffle(duplicateEmails);
 	combinedEmails = originalEmails.concat(duplicateEmails);
 }
 
-(function makeEmails() {
+(() => {
     let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
     for( var i=0; i < 5000; i++ ) {
